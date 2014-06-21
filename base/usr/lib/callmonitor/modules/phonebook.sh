@@ -44,6 +44,28 @@ _pb_list_hash() {
 }
 ## requires /usr/www/all/html/callmonitor/fonbuch.txt
 _pb_fonbuch_read() {
+	_pb_fonbuch_read_phonebook_tools || _pb_fonbuch_read_webui
+}
+_pb_fonbuch_read_phonebook_tools() {
+	local pb_content
+	pb_content="$(phonebook-tools -e -b all -t tsv 2>/dev/null)"
+	if [ $? -ne 0 ]; then
+		return 1
+	fi
+
+	## TODO: this is the only place we use awk in callmonitor. The code below
+	## could easily be replaced with a sed-based one. It would however be less
+	## readable. On the other hand, awk is a mandatory applet in freetz.
+	echo -n "${pb_content}" | {
+		local line IFS=
+		read -r line
+		case "$line" in
+			*encoding=\"utf-8\"*) utf8_latin1 ;;
+			*) cat ;;
+		esac
+	} | awk -F $'\t' '{ print $3 " " $2 " [" $4 "]"; }'
+}
+_pb_fonbuch_read_webui() {
     webui_login && webui_get "getpage=../html/callmonitor/fonbuch.txt" | sed -e '
 	1,/^$/d
 	## remove the VIP flag
