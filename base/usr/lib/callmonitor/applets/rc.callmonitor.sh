@@ -29,8 +29,12 @@ if have monitor; then
     }
     stop_daemon() {
 	echo -n "Stopping $DAEMON ... "
-	"$DAEMON" -s
-	check_status
+	if ! is_running; then
+		echo 'not running.'
+	else
+		"$DAEMON" -s
+		check_status
+	fi
     }
 else
     start_daemon() {
