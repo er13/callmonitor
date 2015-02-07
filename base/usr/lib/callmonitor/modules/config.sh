@@ -1,7 +1,9 @@
 #! /bin/ash
 cfg_cat() {
-    if allcfgconv -? 2>&1 | grep -q " -c "; then
-        allcfgconv -C "$1" -e -c -o -
+    local allcfgconv_bin="allcfgconv"
+    type -p allcfgconv-c >/dev/null 2>&1 && allcfgconv_bin="allcfgconv-c"
+    if $allcfgconv_bin -? 2>&1 | grep -q " -c "; then
+        $allcfgconv_bin -C "$1" -e -c -o -
     elif type -p decode_passwords >/dev/null 2>&1; then
         allcfgconv -C "$1" -e    -o - | decode_passwords
     else
