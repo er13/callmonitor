@@ -11,6 +11,7 @@ EXTRAS := README COPYING ChangeLog
 TAR := tar
 TAR_OWNER := --owner=root --group=root
 SHSTRIP := tools/shstrip
+BUSYBOX := busybox
 
 .PHONY: $(ARCHIVE) build clean check collect
 
@@ -38,7 +39,7 @@ collect: check
 
 check:
 	find base -name .svn -prune \
-	    -or -type f -not \( -name "*.sed" -or -name "*.txt" -or -name "*.cfg" \) -exec busybox ash -n {} \;
+	    -or -type f -not \( -name "*.sed" -or -name "*.txt" -or -name "*.cfg" \) -exec $(BUSYBOX) ash -n {} \;
 
 clean:
 	-rm -f $(PKG)*.tar.bz2
