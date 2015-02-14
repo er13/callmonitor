@@ -39,7 +39,8 @@ collect: check
 
 check:
 	find base -name .svn -prune \
-	    -or -type f -not \( -name "*.sed" -or -name "*.txt" -or -name "*.cfg" \) -exec $(BUSYBOX) ash -n {} \;
+	    -or -type f -not \( -name "*.sed" -or -name "*.txt" -or -name "*.cfg" \) -print0 \
+	| xargs -0 -n1 -- $(BUSYBOX) ash -n
 
 clean:
 	-rm -f $(PKG)*.tar.bz2
