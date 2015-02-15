@@ -4,8 +4,8 @@ cfg_cat() {
     type -p allcfgconv-c >/dev/null 2>&1 && allcfgconv_bin="allcfgconv-c"
     if $allcfgconv_bin -? 2>&1 | grep -q " -c "; then
         $allcfgconv_bin -C "$1" -e -c -o -
-    elif type -p decode_passwords >/dev/null 2>&1; then
-        allcfgconv -C "$1" -e    -o - | decode_passwords
+    elif type -p decrypt-fritzos-cfg >/dev/null 2>&1; then
+        allcfgconv -C "$1" -e    -o - | decrypt-fritzos-cfg
     else
         echo "Error: no password decryption method available" >&2
     fi
