@@ -63,7 +63,7 @@ _pb_fonbuch_read_phonebook_tools() {
 			*encoding=\"utf-8\"*) utf8_latin1 ;;
 			*) cat ;;
 		esac
-	} | awk -F $'\t' '{ gsub(/[^0-9\+]/, "", $3); print $3, $2, "[" $4 "]"; }'
+	} | awk -F $'\t' '{ gsub(/[^0-9\+\*#]/, "", $3); print $3, $2, "[" $4 "]"; }'
 }
 _pb_fonbuch_read_webui() {
     webui_login && webui_get "getpage=../html/callmonitor/fonbuch.txt" | sed -e '
